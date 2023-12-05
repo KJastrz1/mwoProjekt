@@ -32,8 +32,16 @@ jobs:
         uses: actions/upload-artifact@v3.1.0
         with:
           name: personsApi-artifact
-          path: ${{ env.DOTNET_ROOT}}/api    
-
+          path: ${{ env.DOTNET_ROOT}}/api   
+          
+      - name: Publish
+        run: dotnet publish ./P05Shop.API/P05Shop.API.csproj -c Release -o ${{ env.DOTNET_ROOT}}/api
+     
+      - name: upload artifact
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: moviesapi-artifact
+          path: ${{ env.DOTNET_ROOT}}/api   
 
         
   deploy-dev:
@@ -53,3 +61,14 @@ jobs:
         with:
           app-name: 'mwoprojekt' 
           publish-profile: ${{ secrets.PUBLISH_PROFILE_DEV }}
+
+      - name: Download a Build Artifact API
+        uses: actions/download-artifact@v3.0.0 
+        with:
+          name: moviesapi-artifact
+      - name: Azure WebApp API
+        id: deploy-api-to-azure
+        uses: Azure/webapps-deploy@v2
+        with:
+          app-name: 'mwoprojektapi' 
+          publish-profile: ${{ secrets.PUBLISH_PROFILE_DEV_API }}
