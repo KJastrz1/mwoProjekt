@@ -11,12 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P07Shop.DataSeeder", "P07Sh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P10ShopWebAPPMVC.Client", "P10ShopWebAPPMVC.Client\P10ShopWebAPPMVC.Client.csproj", "{1589BC26-7D25-42B7-BD05-0EBE49AAA3E5}"
 EndProject
-
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A51FB08E-2759-418B-9EB9-02E24D9DE25D}"
-	ProjectSection(SolutionItems) = preProject
-		Podsumowanie.txt = Podsumowanie.txt
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeleniumTests", "SeleniumTests\SeleniumTests.csproj", "{65A37144-0DBF-48CE-9280-2030216B9B9B}"
 EndProject
 Global

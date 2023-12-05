@@ -15,7 +15,10 @@ namespace MoviesListTests
         [SetUp]
         public void Setup()
         {
-            _driver = new ChromeDriver();
+            ChromeOptions options = new ChromeOptions();
+            options.AddArgument("--headless");
+
+            _driver = new ChromeDriver(options);
 
             _appBaseUrl = "https://localhost:7255/";
 
