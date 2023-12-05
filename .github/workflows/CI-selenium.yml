@@ -27,7 +27,8 @@ jobs:
         
       - name: Start Web Application
         run: |      
-          dotnet run --project P10ShopWebAPPMVC.Client/P10ShopWebAPPMVC.Client.csproj
+          dotnet run --project P10ShopWebAPPMVC.Client/P10ShopWebAPPMVC.Client.csproj --launch-profile https
+
           dotnet run --project P05Shop.API/P05Shop.API.csproj
 
 
