@@ -25,25 +25,31 @@ jobs:
       - name: Build
         run: dotnet build --configuration Release
         
-      - name: Start Web Application
-        run: |
-          nohup dotnet run --project P10ShopWebAPPMVC.Client/P10ShopWebAPPMVC.Client.csproj --launch-profile https > webapp.log 2>&1 &
-          echo "Web application started successfully."
+      - name: Publish
+        run: dotnet publish ./P10ShopWebAPPMVC.Client/P10ShopWebAPPMVC.Client.csproj -c Release -o ${{ env.DOTNET_ROOT}}/api
+     
+      - name: upload artifact
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: personsApi-artifact
+          path: ${{ env.DOTNET_ROOT}}/api    
 
-      - name: Start API
-        run: | 
-          nohup dotnet run --project P05Shop.API/P05Shop.API.csproj  > webapp.log 2>&1 &
-          echo "API application started successfully."
 
-      - name: Wait for Application to Start
-        run: sleep 10s
         
-      - name: Run Tests
-        run: |      
-          sudo apt-get update
-          sudo apt-get install -y chromium-chromedriver
-          dotnet test --no-restore --verbosity normal
-         
-        env:
-          ASPNETCORE_ENVIRONMENT: "Development"
-          CHROME_BIN: "/usr/bin/chromium-browser"
+  deploy-dev:
+    runs-on: ubuntu-latest
+    needs: build 
+    environment:
+      name: 'Dev' 
+      url: ${{ steps.deploy-to-azure.outputs.webapp-url}}
+    steps:  
+      - name: Download a Build Artifact
+        uses: actions/download-artifact@v3.0.0 
+        with:
+          name: personsApi-artifact
+      - name: Azure WebApp 
+        id: deploy-to-azure
+        uses: Azure/webapps-deploy@v2
+        with:
+          app-name: 'mwoprojekt' 
+          publish-profile: ${{ secrets.PUBLISH_PROFILE_DEV }}
