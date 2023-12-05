@@ -26,11 +26,11 @@ jobs:
         run: dotnet build --configuration Release
         
       - name: Start Web Application
-        run: |      
+        run:       
           dotnet run --project P10ShopWebAPPMVC.Client/P10ShopWebAPPMVC.Client.csproj --launch-profile https
-
+      - name: Start API
+        run:  
           dotnet run --project P05Shop.API/P05Shop.API.csproj
-
 
       - name: Wait for Application to Start
         run: sleep 10s
