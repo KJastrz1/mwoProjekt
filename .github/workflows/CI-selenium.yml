@@ -31,8 +31,9 @@ jobs:
           echo "Web application started successfully."
 
       - name: Start API
-        run:  
-          nohup dotnet run --project P05Shop.API/P05Shop.API.csproj
+        run: | 
+          nohup dotnet run --project P05Shop.API/P05Shop.API.csproj  > webapp.log 2>&1 &
+          echo "API application started successfully."
 
       - name: Wait for Application to Start
         run: sleep 10s
