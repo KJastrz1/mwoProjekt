@@ -33,6 +33,7 @@ jobs:
     steps:
       - name: Run Tests
         run: |
+          cd SeleniumTests
           dotnet test --no-restore --verbosity normal  
           
           sudo apt-get update
