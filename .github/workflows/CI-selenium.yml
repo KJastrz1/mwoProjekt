@@ -32,13 +32,18 @@ jobs:
         uses: actions/upload-artifact@v3.1.0
         with:
           name: personsApi-artifact
-          path: ${{ env.DOTNET_ROOT}}/api   
+          path: ${{ env.DOTNET_ROOT}}/api 
           
+      - name: Set GitHub Actions Secret
+        run: echo "CONNECTION_STRING=${{ secrets.DB_CONNECTION_STRING }}" >> $GITHUB_ENV
+
+      - name: Display Connection String
+        run: echo $CONNECTION_STRING   
+        
       - name: Publish
         env:
           CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
-        run: | 
-          echo $CONNECTION_STRING  
+        run: 
           dotnet publish ./P05Shop.API/P05Shop.API.csproj -c Release -o ${{ env.DOTNET_ROOT}}/api 
      
       - name: upload artifact
