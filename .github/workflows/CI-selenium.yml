@@ -24,23 +24,26 @@ jobs:
 
       - name: Build
         run: dotnet build --configuration Release
+        
+      - name: Start Web Application
+        run: |      
+          dotnet run --project P10ShopWebAPPMVC.Client/P10ShopWebAPPMVC.Client.csproj
+          dotnet run --project P05Shop.API/P05Shop.API.csproj
 
-  test:
-    runs-on: ubuntu-latest
 
-    needs: build
-
-    steps:
+      - name: Wait for Application to Start
+        run: sleep 10s
+        
       - name: Run Tests
-        run: |
-          cd SeleniumTests
-          dotnet test --no-restore --verbosity normal  
+        run: |        
+          
           
           sudo apt-get update
           sudo apt-get install -y chromium-chromedriver
           sudo ln -s /usr/lib/chromium-browser/chromedriver /usr/bin/chromedriver
+          
+          dotnet test --no-restore --verbosity normal
          
-          dotnet test SeleniumTests/SeleniumTests.csproj
         env:
           ASPNETCORE_ENVIRONMENT: "Development"
           CHROME_BIN: "/usr/bin/chromium-browser"
