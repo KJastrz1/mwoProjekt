@@ -26,8 +26,10 @@ jobs:
         run: dotnet build --configuration Release
         
       - name: Start Web Application
-        run:       
-          nohup dotnet run --project P10ShopWebAPPMVC.Client/P10ShopWebAPPMVC.Client.csproj --launch-profile https
+        run: |
+          nohup dotnet run --project P10ShopWebAPPMVC.Client/P10ShopWebAPPMVC.Client.csproj --launch-profile https > webapp.log 2>&1 &
+          echo "Web application started successfully."
+
       - name: Start API
         run:  
           nohup dotnet run --project P05Shop.API/P05Shop.API.csproj
