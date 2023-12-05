@@ -35,6 +35,7 @@ namespace MoviesListTests
             Assert.AreEqual(2, tableHeaders.Count);
         }
 
+        [Test]
         public void LinkToCreateMovieWorks()
         {
 
