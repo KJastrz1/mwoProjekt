@@ -15,7 +15,10 @@ namespace CreateMovieTests
         [SetUp]
         public void Setup()
         {
-            _driver = new ChromeDriver();            
+            ChromeOptions options = new ChromeOptions();
+            options.AddArgument("--headless"); 
+
+            _driver = new ChromeDriver(options);
             _appBaseUrl = "https://localhost:7255/";
             _driver.Navigate().GoToUrl(_appBaseUrl + "Movies/Create");
         }
