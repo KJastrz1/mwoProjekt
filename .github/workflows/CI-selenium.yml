@@ -27,10 +27,10 @@ jobs:
         
       - name: Start Web Application
         run:       
-          dotnet run --project P10ShopWebAPPMVC.Client/P10ShopWebAPPMVC.Client.csproj --launch-profile https
+          nohup dotnet run --project P10ShopWebAPPMVC.Client/P10ShopWebAPPMVC.Client.csproj --launch-profile https
       - name: Start API
         run:  
-          dotnet run --project P05Shop.API/P05Shop.API.csproj
+          nohup dotnet run --project P05Shop.API/P05Shop.API.csproj
 
       - name: Wait for Application to Start
         run: sleep 10s
