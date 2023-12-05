@@ -39,13 +39,9 @@ jobs:
         run: sleep 10s
         
       - name: Run Tests
-        run: |        
-          
-          
+        run: |      
           sudo apt-get update
           sudo apt-get install -y chromium-chromedriver
-          sudo ln -s /usr/lib/chromium-browser/chromedriver /usr/bin/chromedriver
-          
           dotnet test --no-restore --verbosity normal
          
         env:
