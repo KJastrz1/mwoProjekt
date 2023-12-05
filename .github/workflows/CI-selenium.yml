@@ -37,7 +37,9 @@ jobs:
       - name: Publish
         env:
           CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
-        run: dotnet publish ./P05Shop.API/P05Shop.API.csproj -c Release -o ${{ env.DOTNET_ROOT}}/api 
+        run: | 
+          echo $CONNECTION_STRING  
+          dotnet publish ./P05Shop.API/P05Shop.API.csproj -c Release -o ${{ env.DOTNET_ROOT}}/api 
      
       - name: upload artifact
         uses: actions/upload-artifact@v3.1.0
