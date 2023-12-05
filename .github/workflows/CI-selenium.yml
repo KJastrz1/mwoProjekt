@@ -35,6 +35,8 @@ jobs:
           path: ${{ env.DOTNET_ROOT}}/api   
           
       - name: Publish
+        env:
+          CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
         run: dotnet publish ./P05Shop.API/P05Shop.API.csproj -c Release -o ${{ env.DOTNET_ROOT}}/api 
      
       - name: upload artifact
