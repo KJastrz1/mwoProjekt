@@ -26,7 +26,7 @@ jobs:
         run: dotnet build --configuration Release
         
       - name: Publish
-        run: dotnet publish ./P10ShopWebAPPMVC.Client/P10ShopWebAPPMVC.Client.csproj -c Release -o ${{ env.DOTNET_ROOT}}/api
+        run: dotnet publish ./P10ShopWebAPPMVC.Client/P10ShopWebAPPMVC.Client.csproj -c Release -o ${{ env.DOTNET_ROOT}}/api --launch-profile https
      
       - name: upload artifact
         uses: actions/upload-artifact@v3.1.0
@@ -35,7 +35,7 @@ jobs:
           path: ${{ env.DOTNET_ROOT}}/api   
           
       - name: Publish
-        run: dotnet publish ./P05Shop.API/P05Shop.API.csproj -c Release -o ${{ env.DOTNET_ROOT}}/api
+        run: dotnet publish ./P05Shop.API/P05Shop.API.csproj -c Release -o ${{ env.DOTNET_ROOT}}/api --launch-profile http
      
       - name: upload artifact
         uses: actions/upload-artifact@v3.1.0
