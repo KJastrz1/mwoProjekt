@@ -23,8 +23,7 @@ jobs:
         run: dotnet restore
 
       - name: Build
-        env:
-          CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
+      
         run: dotnet build --configuration Release
         
       - name: Publish
