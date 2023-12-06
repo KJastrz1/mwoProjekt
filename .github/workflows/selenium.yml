@@ -31,6 +31,6 @@ jobs:
     - name: Run API
       run: nohup dotnet run --project P05Shop.API/P05Shop.API.csproj > API.log &
     - name: Run Web App
-      run: nohup dotnet run --project P10ShopWebAPPMVC.Client/P10ShopWebAPPMVC.Client.csproj --launch-profile https> App.log &
+      run: nohup dotnet run --project P10ShopWebAPPMVC.Client/P10ShopWebAPPMVC.Client.csproj --launch-profile https > App.log &
     - name: Wait
       run: sleep 10s
