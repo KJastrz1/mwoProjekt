@@ -11,9 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      uses: actions/checkout@v3    
     - name: Install .NET Core
       uses: actions/setup-dotnet@v3
       with:
@@ -34,3 +32,9 @@ jobs:
       run: nohup dotnet run --project P10ShopWebAPPMVC.Client/P10ShopWebAPPMVC.Client.csproj --launch-profile https > App.log &
     - name: Wait
       run: sleep 10s
+    - name: Set permissions
+      run: chmod -R 777 .
+    - name: Execute unit tests
+      id: tests
+      run: dotnet test > TestOutput.log
+      continue-on-error: true
