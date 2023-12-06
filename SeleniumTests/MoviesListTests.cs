@@ -28,7 +28,7 @@ namespace MoviesListTests
         [Test]
         public void MoviesPageTitleIsCorrect()
         {
-            Assert.AreEqual("Movie", _driver.Title);
+            Assert.AreEqual("Movies", _driver.Title);
         }
 
         [Test]
