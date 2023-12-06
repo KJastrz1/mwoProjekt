@@ -37,4 +37,19 @@ jobs:
     - name: Execute unit tests
       id: tests
       run: dotnet test > TestOutput.log
-      continue-on-error: true
+      continue-on-error: true 
+    - uses: actions/upload-artifact@v3
+      if: steps.tests.outcome != 'success'
+      with:
+        name: Log
+        path: TestOutput.log
+    - name: Notify
+      if: steps.tests.outcome != 'success'
+      uses: fjogeleit/http-request-action@v1
+      with:
+        url: 'https://dev.azure.com/01169620/ProjektTest/_apis/wit/workitems/$task?api-version=7.1-preview.3'
+        method: 'POST'
+        username: ${{ secrets.AZURE_USERNAME }}
+        password: ${{ secrets.AZURE_TOKEN }}
+        customHeaders: '{"Content-Type": "application/json-patch+json"}'
+        data: '[ {"op": "add", "path": "/fields/System.Title", "from": null, "value": "Pipeline error: ${{ github.event.pull_request.title }}" }, { "op": "add", "path": "/fields/System.Description", "from": null, "value": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" }]'
