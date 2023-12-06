@@ -1,0 +1,36 @@
+name: Selenium
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+    - name: App Settings Variable Substitution
+      uses: microsoft/variable-substitution@v1
+      with:
+        files: 'P05Shop.API/appsettings.json'
+      env:
+        ConnectionStrings.DefaultConnection: ${{ secrets.DB_CONNECTION_STRING }}
+    - name: Restore Dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --configuration Release
+    - name: Run API
+      run: nohup dotnet run --project P05Shop.API/P05Shop.API.csproj > API.log &
+    - name: Run Web App
+      run: nohup dotnet run --project P10ShopWebAPPMVC.Client/P10ShopWebAPPMVC.Client.csproj > App.log &
+    - name: Wait
+      run: sleep 10s
