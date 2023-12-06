@@ -29,7 +29,7 @@ namespace P05Shop.API.Controllers
             if (result.Success)
                 return Ok(result);
             else
-                return  StatusCode(500, $"Internal server error {result.Message}");
+                return  StatusCode(501, $" {result.Message}");
         }
 
         [HttpGet("search/{text}/{page}/{pageSize}")]
