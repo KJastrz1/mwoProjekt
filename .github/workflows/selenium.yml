@@ -47,7 +47,7 @@ jobs:
       if: steps.tests.outcome != 'success'
       uses: fjogeleit/http-request-action@v1
       with:
-        url:  'https://dev.azure.com/01158651/mwoProjekt/_apis/wit/workitems/$task?api-version=7.1-preview.3''
+        url:  'https://dev.azure.com/01158651/mwoProjekt/_apis/wit/workitems/$task?api-version=7.1-preview.3'
         method: 'POST'
         username: ${{ secrets.AZURE_USERNAME }}
         password: ${{ secrets.AZURE_TOKEN }}
