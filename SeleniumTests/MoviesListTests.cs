@@ -16,11 +16,15 @@ namespace MoviesListTests
         [SetUp]
         public void Setup()
         {
-            
+
             ChromeOptions options = new ChromeOptions();
             options.AddArgument("--headless");
+            options.AddArgument("--disable-gpu");  // Add this line for headless mode
 
-            _driver = new ChromeDriver(options);                
+            var service = ChromeDriverService.CreateDefaultService();
+            service.Port = 4444;  // Set the port to a fixed value
+
+            _driver = new ChromeDriver(service, options);
 
 
             _appBaseUrl = "http://localhost:7255/";
