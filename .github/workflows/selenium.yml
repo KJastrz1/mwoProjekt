@@ -33,10 +33,8 @@ jobs:
     - name: Wait
       run: sleep 10s
     - name: Set permissions
-      run: chmod -R 777 .
+      run: chmod -R 777 .     
       
-    - name: setup-chromedriver
-      uses: nanasess/setup-chromedriver@v2.2.1             
       
     - name: Execute unit tests
       id: tests
