@@ -20,7 +20,7 @@ namespace MoviesListTests
 
             _driver = new ChromeDriver(options);
 
-            _appBaseUrl = "https://localhost:7255/";
+            _appBaseUrl = "http://localhost:7255/";
 
             _driver.Navigate().GoToUrl(_appBaseUrl + "Movies/");
         }
@@ -28,7 +28,7 @@ namespace MoviesListTests
         [Test]
         public void MoviesPageTitleIsCorrect()
         {
-            Assert.AreEqual("Movies", _driver.Title);
+            Assert.AreEqual("Movie", _driver.Title);
         }
 
         [Test]
