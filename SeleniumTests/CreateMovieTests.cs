@@ -58,7 +58,7 @@ namespace CreateMovieTests
         [TearDown]
         public void Teardown()
         {
-            _driver.Quit();
+            _driver.Close();
         }
     }
 }

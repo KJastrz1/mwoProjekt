@@ -84,7 +84,7 @@ namespace MoviesListTests
         public void Teardown()
         {
 
-            _driver.Quit();
+            _driver.Close();
         }
     }
 }
