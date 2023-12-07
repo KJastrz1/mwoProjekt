@@ -22,7 +22,7 @@ namespace MoviesListTests
             options.AddArgument("--disable-gpu");  // Add this line for headless mode
 
             var service = ChromeDriverService.CreateDefaultService();
-            service.Port = 4444;  // Set the port to a fixed value
+            service.Port = 50001;  // Set the port to a fixed value
 
             _driver = new ChromeDriver(service, options);
 
