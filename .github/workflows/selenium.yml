@@ -29,7 +29,7 @@ jobs:
     - name: Run API
       run: nohup dotnet run --urls http://localhost:5093 --project P05Shop.API/P05Shop.API.csproj > API.log &
     - name: Run Web App
-      run: nohup dotnet run https://localhost:7255 --project P10ShopWebAPPMVC.Client/P10ShopWebAPPMVC.Client.csproj > App.log &
+      run: nohup dotnet run http://localhost:7255 --project P10ShopWebAPPMVC.Client/P10ShopWebAPPMVC.Client.csproj > App.log &
     - name: Wait
       run: sleep 10s
     - name: Set permissions
