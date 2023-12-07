@@ -17,12 +17,11 @@ namespace MoviesListTests
         {
             ChromeOptions options = new ChromeOptions();
             options.AddArgument("--headless");
-            string path = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
+          
 
-            _driver = new ChromeDriver(path + @"/Driver",options);
+            _driver = new ChromeDriver(options);
 
             _appBaseUrl = "http://localhost:7255/";
-
             _driver.Navigate().GoToUrl(_appBaseUrl + "Movies/");
         }
 
