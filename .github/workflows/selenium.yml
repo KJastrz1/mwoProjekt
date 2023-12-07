@@ -35,6 +35,8 @@ jobs:
     - name: Set permissions
       run: chmod -R 777 .     
       
+    - uses: browser-actions/setup-chrome@latest
+    - run: chrome --version      
       
     - name: Execute unit tests
       id: tests
