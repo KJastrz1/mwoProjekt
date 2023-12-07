@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
 using System;
 
@@ -15,13 +16,11 @@ namespace CreateMovieTests
         [SetUp]
         public void Setup()
         {
-            ChromeOptions options = new ChromeOptions();
-            options.AddArgument("--headless");
             string path = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
+            FirefoxOptions opts = new FirefoxOptions();
+            opts.AddArgument("--headless");
+            _driver = new FirefoxDriver(path + @"/Driver", opts);
 
-            _driver = new ChromeDriver(path + @"/Driver", options);
-
-          
             _appBaseUrl = "http://localhost:7255/";
             _driver.Navigate().GoToUrl(_appBaseUrl + "Movies/Create");
         }
