@@ -10,13 +10,13 @@ namespace MoviesListTests
     [TestFixture]
     public class MoviesListTests
     {
-        private IWebDriver _driver;
+        static IWebDriver _driver;
         private string _appBaseUrl;
 
         [SetUp]
         public void Setup()
         {
-            string path = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
+            string path = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;       
             FirefoxOptions opts = new FirefoxOptions();
             opts.AddArgument("--headless");
             _driver = new FirefoxDriver(path + @"/Driver", opts);
