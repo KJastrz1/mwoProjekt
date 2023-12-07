@@ -44,7 +44,7 @@ jobs:
     - uses: pCYSl5EDgo/cat@master
       id: hello
       with:
-        path: TestOutpu.log
+        path: TestOutput.log
     - run: echo $TEXT
       env:
         TEXT: ${{ steps.hello.outputs.text }}        
