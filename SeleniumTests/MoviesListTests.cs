@@ -10,7 +10,7 @@ namespace MoviesListTests
     [TestFixture]
     public class MoviesListTests
     {
-        static IWebDriver _driver;
+        private IWebDriver _driver;
         private string _appBaseUrl;
 
         [SetUp]
