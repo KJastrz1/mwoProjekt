@@ -33,8 +33,9 @@ jobs:
     - name: Wait
       run: sleep 10s
     - name: Set permissions
-      run: chmod -R 777 .     
-      
+      run: chmod -R 777 .  
+    - name: Check
+      run: sudo ufw status
     
       
     - name: Execute unit tests
