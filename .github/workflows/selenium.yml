@@ -36,7 +36,9 @@ jobs:
       run: chmod -R 777 .
     - name: Execute unit tests
       id: tests
-      run: dotnet test > TestOutput.log
+      run: | 
+        dotnet test > TestOutput.log
+        cat TestOutput.log
       continue-on-error: true 
     - uses: actions/upload-artifact@v3
       if: steps.tests.outcome != 'success'
