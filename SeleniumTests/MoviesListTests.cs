@@ -19,7 +19,8 @@ namespace MoviesListTests
 
             ChromeOptions options = new ChromeOptions();
             options.AddArgument("--headless");
-            options.AddArgument("--disable-gpu");  // Add this line for headless mode
+            options.AddArgument("--disable-gpu"); 
+            options.AddArgument("--no-sandbox"); // Add this line for headless mode
 
             var service = ChromeDriverService.CreateDefaultService();
             service.Port = 50001;  // Set the port to a fixed value
