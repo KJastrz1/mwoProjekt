@@ -22,10 +22,9 @@ namespace MoviesListTests
             options.AddArgument("--disable-gpu"); 
             options.AddArgument("--no-sandbox"); // Add this line for headless mode
 
-            var service = ChromeDriverService.CreateDefaultService();
-            service.Port = 50001;  // Set the port to a fixed value
+      
 
-            _driver = new ChromeDriver(service, options);
+            _driver = new ChromeDriver(options);
 
 
             _appBaseUrl = "http://localhost:7255/";
@@ -38,48 +37,48 @@ namespace MoviesListTests
             Assert.AreEqual("Movies", _driver.Title);
         }
 
-        // [Test]
-        // public void MoviesTableHasCorrectHeaders()
-        // {
-        //     var tableHeaders = _driver.FindElements(By.TagName("th"));
-        //     Assert.AreEqual(2, tableHeaders.Count);
-        // }
+        [Test]
+        public void MoviesTableHasCorrectHeaders()
+        {
+            var tableHeaders = _driver.FindElements(By.TagName("th"));
+            Assert.AreEqual(2, tableHeaders.Count);
+        }
 
-        // [Test]
-        // public void LinkToCreateMovieWorks()
-        // {
+        [Test]
+        public void LinkToCreateMovieWorks()
+        {
 
-        //     var createNewLink = _driver.FindElement(By.LinkText("Create New"));
-        //     Assert.IsNotNull(createNewLink);
-        // }
+            var createNewLink = _driver.FindElement(By.LinkText("Create New"));
+            Assert.IsNotNull(createNewLink);
+        }
 
-        // [Test]
-        // public void LinkToEditMovieWorks()
-        // {
+        [Test]
+        public void LinkToEditMovieWorks()
+        {
 
-        //     var firstEditLink = _driver.FindElement(By.CssSelector("table tbody tr:first-child td:nth-child(3) a:first-child"));
-        //     firstEditLink.Click();
-        //     Assert.AreEqual(_appBaseUrl + "Movies/Edit/1", _driver.Url);
-        // }
+            var firstEditLink = _driver.FindElement(By.CssSelector("table tbody tr:first-child td:nth-child(3) a:first-child"));
+            firstEditLink.Click();
+            Assert.AreEqual(_appBaseUrl + "Movies/Edit/1", _driver.Url);
+        }
 
 
-        // [Test]
-        // public void LinkToMovieDetailsWorks()
-        // {
-        //     _driver.Navigate().GoToUrl(_appBaseUrl + "Movies/");
-        //     var firstDetailsLink = _driver.FindElement(By.CssSelector("table tbody tr:first-child td:nth-child(3) a:nth-child(2)"));
-        //     firstDetailsLink.Click();
-        //     Assert.AreEqual(_appBaseUrl + "Movies/Details/1", _driver.Url);
-        // }
+        [Test]
+        public void LinkToMovieDetailsWorks()
+        {
+            _driver.Navigate().GoToUrl(_appBaseUrl + "Movies/");
+            var firstDetailsLink = _driver.FindElement(By.CssSelector("table tbody tr:first-child td:nth-child(3) a:nth-child(2)"));
+            firstDetailsLink.Click();
+            Assert.AreEqual(_appBaseUrl + "Movies/Details/1", _driver.Url);
+        }
 
-        // [Test]
-        // public void LinkToDeleteMovieWorks()
-        // {
-        //     _driver.Navigate().GoToUrl(_appBaseUrl + "Movies/");
-        //     var firstDeleteLink = _driver.FindElement(By.CssSelector("table tbody tr:first-child td:nth-child(3) a:nth-child(3)"));
-        //     firstDeleteLink.Click();
-        //     Assert.AreEqual(_appBaseUrl + "Movies/Delete/1", _driver.Url);
-        // }
+        [Test]
+        public void LinkToDeleteMovieWorks()
+        {
+            _driver.Navigate().GoToUrl(_appBaseUrl + "Movies/");
+            var firstDeleteLink = _driver.FindElement(By.CssSelector("table tbody tr:first-child td:nth-child(3) a:nth-child(3)"));
+            firstDeleteLink.Click();
+            Assert.AreEqual(_appBaseUrl + "Movies/Delete/1", _driver.Url);
+        }
 
 
 
