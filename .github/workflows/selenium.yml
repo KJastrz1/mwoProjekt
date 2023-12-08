@@ -34,8 +34,7 @@ jobs:
       run: sleep 10s
     - name: Set permissions
       run: chmod -R 777 .  
-    - name: Check
-      run: sudo ufw status
+
     - uses: browser-actions/setup-chrome@latest
     - run: chrome --version    
           
