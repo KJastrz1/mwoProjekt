@@ -61,8 +61,10 @@ jobs:
       - name: Extract failed test information
         id: extract-info
         run: |
-          echo "::set-output name=failed-tests::$(grep -A 5 'Error Message:' TestOutput.log)"   
-          echo "::set-output name=failed-tests-title::$(grep -B 1 'Error Message:' TestOutput.log)"                
+         failed_tests=$(grep -A 5 'Error Message:' TestOutput.log || true)
+         echo "::set-output name=failed-tests::$failed_tests"
+         failed_tests=$(grep -B 1 'Error Message:' TestOutput.log || true)
+         echo "::set-output name=failed-tests-desc::$failed_tests"            
 
       - name: Send bug to Azure DevOps
         if: steps.tests.outcome != 'success'
@@ -78,11 +80,11 @@ jobs:
                 {
                   "op": "add",
                   "path": "/fields/System.Title",
-                  "value": "${{ grep -B 1 'Error Message:' TestOutput.log }}"
+                  "value": "${{ steps.extract-info.outputs.failed-tests }}"
                 },
                 {
                   "op": "add",
                   "path": "/fields/System.Description",
-                  "value": "${{ grep -A 5 'Error Message:' TestOutput.log }}"
+                  "value": "${{ steps.extract-info.outputs.failed-tests-desc }}"
                 }
               ]
