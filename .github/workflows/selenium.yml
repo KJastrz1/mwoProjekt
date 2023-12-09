@@ -63,7 +63,10 @@ jobs:
         run: |
           failed_tests_desc=$(grep -A 6 'Error Message:' TestOutput.log || true)
           echo "FailedTestsDesc=${failed_tests_desc}" >> $GITHUB_ENV
-
+        shell: /usr/bin/bash -e {0}
+        env:
+          DOTNET_ROOT: /usr/share/dotnet
+          
       - name: Use the captured output in another step
         run: |
           echo "Failed tests description: $FailedTestsDesc"
