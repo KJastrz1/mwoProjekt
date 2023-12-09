@@ -58,16 +58,16 @@ jobs:
           name: Log
           path: TestOutput.log
 
-      - name: Extract failed test information
-        id: extract-info
-        run: |
-         
-         failed_tests=$(grep -B 2 'Error Message:' TestOutput.log || true)
- 
-         failed_tests_desc=$(grep -A 6 'Error Message:' TestOutput.log || true)
-             
 
-            
+      - name: Run tests and capture output
+        run: |
+          failed_tests_desc=$(grep -A 6 'Error Message:' TestOutput.log || true)
+          echo "FailedTestsDesc=${failed_tests_desc}" >> $GITHUB_ENV
+
+      - name: Use the captured output in another step
+        run: |
+          echo "Failed tests description: $FailedTestsDesc"
+         
 
       - name: Send bug to Azure DevOps
         if: steps.tests.outcome != 'success'
