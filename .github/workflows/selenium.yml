@@ -83,11 +83,11 @@ jobs:
                 {
                   "op": "add",
                   "path": "/fields/System.Title",
-                  "value": "{{$failed_tests}}"
+                  "value": "failed_tests"
                 },
                 {
                   "op": "add",
                   "path": "/fields/System.Description",
-                  "value": "${{failed_tests_desc}}"
+                  "value": "$failed_tests_desc"
                 }
               ]
