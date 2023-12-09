@@ -70,23 +70,30 @@ jobs:
 
       - name: Send bug to Azure DevOps
         if: steps.tests.outcome != 'success'
-        uses: fjogeleit/http-request-action@v1
-        with:
-          url: "https://dev.azure.com/01158651/mwoProjekt/_apis/wit/workitems/$task?api-version=7.1-preview.3"
-          method: "POST"
-          username: ${{ secrets.AZURE_USERNAME }}
-          password: ${{ secrets.AZURE_TOKEN }}
-          customHeaders: '{"Content-Type": "application/json-patch+json"}'
-          data: |
-            [
-              {
-                "op": "add",
-                "path": "/fields/System.Title",
-                "value": "{{ format('{0}', github.workspace + 'FailedTests.log') }}"
-              },
-              {
-                "op": "add",
-                "path": "/fields/System.Description",
-                "value": "${failed_tests_desc}"
-              }
-            ]
+        run: |
+          failed_tests_desc=$(cat FailedTestsDesc.log)
+          echo $failed_tests_desc
+          task=$(curl -X GET -u ${{ secrets.AZURE_USERNAME }}:${{ secrets.AZURE_TOKEN }} "https://dev.azure.com/01158651/mwoProjekt/_apis/wit/wiql?api-version=6.0" -H "Content-Type: application/json" -d '{"query": "Select [System.Id] From WorkItems Where [System.WorkItemType] = \'Bug\' AND [System.Title] = \'Failed tests\'"}' | jq -r '.workItems[0].id')
+          echo $task
+          curl -X PATCH -u ${{ secrets.AZURE_USERNAME }}:${{ secrets.AZURE_TOKEN }} "https://dev.azure.com/01158651/mwoProjekt/_apis/wit/workitems/$task?api-version=7.1-preview.3" -H "Content-Type: application/json-patch+json" -d '[{"op": "add", "path": "/fields/System.Description", "value": "${failed_tests_desc}"}]'
+          curl -X PATCH -u ${{ secrets.AZURE_USERNAME }}:${{ secrets.AZURE_TOKEN }} "https://dev.azure.com/01158651/mwoProjekt/_apis/wit/workitems/$task?api-version=7.1-preview.3" -H "Content-Type: application/json-patch+json" -d '[{"op": "add", "path": "/fields/System.Title", "value": "{{ format('{0}', github.workspace + 'FailedTests.log') }}"}]'
+        # uses: fjogeleit/http-request-action@v1
+        # with:
+        #   url: "https://dev.azure.com/01158651/mwoProjekt/_apis/wit/workitems/$task?api-version=7.1-preview.3"
+        #   method: "POST"
+        #   username: ${{ secrets.AZURE_USERNAME }}
+        #   password: ${{ secrets.AZURE_TOKEN }}
+        #   customHeaders: '{"Content-Type": "application/json-patch+json"}'
+        #   data: |
+        #     [
+        #       {
+        #         "op": "add",
+        #         "path": "/fields/System.Title",
+        #         "value": "{{ format('{0}', github.workspace + 'FailedTests.log') }}"
+        #       },
+        #       {
+        #         "op": "add",
+        #         "path": "/fields/System.Description",
+        #         "value": "${failed_tests_desc}"
+        #       }
+        #     ]
