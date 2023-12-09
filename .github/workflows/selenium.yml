@@ -55,15 +55,15 @@ jobs:
         with:
           name: Log
           path: TestOutput.log
-          
-      - name: Extract failed tests information
-        if: steps.tests.outcome != 'success'
+
+      - name: Extract failed test information
         id: extract-info
-        run: |      
-          $failedTests = Get-Content test_output.txt | Select-String -Pattern "Failed:|Error:" -Context 1, 1
-          $failedTests = $failedTests | ForEach-Object { $_.Context.PreContext + $_.Line + $_.Context.PostContext }
-        
-          echo "FailedTestsInfo=$failedTests" >> $GITHUB_ENV
+        run: |
+          # Use grep to get lines containing "Failed" and the next 5 lines
+          FAILED_TESTS_INFO=$(grep -A 5 "Failed" test_output.txt | grep -v "--")
+
+          # Set the information as an output variable
+          echo "FailedTestsInfo=$FAILED_TESTS_INFO" >> $GITHUB_ENV
 
       - name: Send bug to Azure DevOps
         if: steps.tests.outcome != 'success'
@@ -84,6 +84,6 @@ jobs:
                 {
                   "op": "add",
                   "path": "/fields/System.Description",
-                  "value": "${{ steps.extract-info.outputs.failed_tests_info }}"
+                  "value": "${{ env.FailedTestsInfo }}"
                 }
               ]
