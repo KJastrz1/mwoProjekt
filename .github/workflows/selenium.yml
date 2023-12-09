@@ -82,11 +82,11 @@ jobs:
               {
                 "op": "add",
                 "path": "/fields/System.Title",
-                "value": "$(cat FailedTests.log)"
+                "value": "{{ format('{0}', github.workspace + 'FailedTests.log') }}"
               },
               {
                 "op": "add",
                 "path": "/fields/System.Description",
-                "value": "$failed_tests_desc"
+                "value": "${failed_tests_desc}"
               }
             ]
