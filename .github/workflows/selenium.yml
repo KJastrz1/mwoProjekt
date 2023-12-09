@@ -57,6 +57,7 @@ jobs:
         path: TestOutput.log
 
     - name: Extract failed test information
+      if: steps.tests.outcome != 'success'
       id: extract-info
       run: |       
         FAILED_TESTS_INFO=$(grep "Failed test" TestOutput.log)
