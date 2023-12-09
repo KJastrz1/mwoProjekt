@@ -63,7 +63,7 @@ jobs:
         run: |
          export IFS=""
          failed_tests=$(grep -A 6 'Error Message:' TestOutput.log || true)
-         echo "${{failed_tests}}"
+         echo "$failed_tests"
          echo "::set-output name=failed-tests::$failed_tests"
          failed_tests=$(grep -B 2 'Error Message:' TestOutput.log || true)
          echo "::set-output name=failed-tests-desc::$failed_tests"           
