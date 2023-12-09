@@ -38,10 +38,9 @@ jobs:
 
       - name: Run tests and capture output
         id: tests
-        run: |
-          set -e
+        run: |         
           dotnet test > TestOutput.log
-          TEST_OUTPUT=$(cat TestOutput.log | grep -A 3 "failed" || true)
+          TEST_OUTPUT=$(grep -i -A 3 Failed TestOutput.log)
           echo "TEST_OUTPUT=${TEST_OUTPUT}" >> $GITHUB_ENV
 
 
