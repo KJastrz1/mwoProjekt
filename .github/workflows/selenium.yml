@@ -60,7 +60,7 @@ jobs:
         id: extract-info
         run: |
           # Use grep to get lines containing "Failed" and the next 5 lines
-          FAILED_TESTS_INFO=$(grep -A 5 "Failed" TestOutput.log | grep -v "--")
+          FAILED_TESTS_INFO=$(grep -A 5 "Failed" TestOutput.log)
 
           # Set the information as an output variable
           echo "FailedTestsInfo=$FAILED_TESTS_INFO" >> $GITHUB_ENV
