@@ -41,23 +41,7 @@ jobs:
     - name: Execute unit tests
       id: tests
       run: dotnet test > TestOutput.log
-      continue-on-error: true 
-
-    - uses: pCYSl5EDgo/cat@master
-      id: app
-      with:
-        path: API.log
-    - run: echo $TEXT
-      env:
-        TEXT: ${{ steps.app.outputs.text }}    
-      
-    - uses: pCYSl5EDgo/cat@master
-      id: api
-      with:
-        path: App.log
-    - run: echo $TEXT
-      env:
-        TEXT: ${{ steps.api.outputs.text }}    
+      continue-on-error: true  
         
     - uses: pCYSl5EDgo/cat@master
       id: hello
