@@ -59,13 +59,14 @@ jobs:
           path: TestOutput.log
 
       - name: Run grep command and capture output
+        id: grep
         run: |
           result=$(grep -A 5 'Failed' TestOutput.log)
-          
+          echo "RESULT=result" >> $GITHUB_OUTPUT
 
       - name: Run tests and capture output
         run: |
-          echo "Result: $result"
+          echo "Result: ${{steps.grep.outputs.RESULT}}"
    
       - name: Use the captured output in another step
         run: |
