@@ -32,6 +32,8 @@ jobs:
         run: nohup dotnet run --urls http://0.0.0.0:7255 --project P10ShopWebAPPMVC.Client/P10ShopWebAPPMVC.Client.csproj > App.log &
       - name: Wait
         run: sleep 10s
+      - name: Set permissions
+        run: chmod -R 777 .       
 
       - uses: browser-actions/setup-chrome@latest
       - run: chrome --version
@@ -59,7 +61,7 @@ jobs:
       - name: Extract failed test information
         id: extract-info
         run: |
-          grep -A 5 "Failed" TestOutput.log)     
+          grep -A 5 "Failed" TestOutput.log     
 
           
       
