@@ -59,9 +59,11 @@ jobs:
     - name: Extract failed test information
       if: steps.tests.outcome != 'success'
       id: extract-info
-      run: |       
-        FAILED_TESTS_INFO=$(grep "Failed test" TestOutput.log)
-       
+      run: |          
+        FAILED_TESTS_INFO=$(grep -A9999 "Failed" TestOutput.log | grep -B9999 "Stack Trace")
+
+        FAILED_TESTS_INFO=$(echo "$FAILED_TESTS_INFO" | sed -e '1,/--/d' -e '/Stack Trace/,$d')
+      
         echo "::set-output name=failed_tests_info::$FAILED_TESTS_INFO"
 
     - name: Send bug to Azure DevOps
