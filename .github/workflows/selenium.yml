@@ -78,11 +78,11 @@ jobs:
                 {
                   "op": "add",
                   "path": "/fields/System.Title",
-                  "value": "${{ steps.extract-info.outputs.failed-tests }}"
+                  "value": "${{ grep -B 1 'Error Message:' TestOutput.log }}"
                 },
                 {
                   "op": "add",
                   "path": "/fields/System.Description",
-                  "value": "${{ steps.extract-info.outputs.failed-tests-title }}"
+                  "value": "${{ grep -A 5 'Error Message:' TestOutput.log }}"
                 }
               ]
