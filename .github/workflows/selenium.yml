@@ -36,14 +36,33 @@ jobs:
       - uses: browser-actions/setup-chrome@latest
       - run: chrome --version
 
-      - name: Run tests and capture output
+      - name: Run tests
         id: tests
-        run: |         
-          dotnet test > TestOutput.log
-          TEST_OUTPUT=$(grep -i -A 3 Failed TestOutput.log)
-          echo "TEST_OUTPUT=${TEST_OUTPUT}" >> $GITHUB_ENV
+        run: dotnet test > TestOutput.log
+        continue-on-error: true
 
+      - name: Show test output
+        uses: pCYSl5EDgo/cat@master
+        id: hello
+        with:
+          path: TestOutput.log
+      - run: echo $TEXT
+        env:
+          TEXT: ${{ steps.hello.outputs.text }}
 
+      - uses: actions/upload-artifact@v3
+        if: steps.tests.outcome != 'success'
+        with:
+          name: Log
+          path: TestOutput.log
+
+      - name: Extract failed test information
+        id: extract-info
+        run: |
+          export MY_VARIABLE=$(grep -A 5 "Failed" TestOutput.log)     
+
+          
+      
 
       - name: Send bug to Azure DevOps
         if: steps.tests.outcome != 'success'
@@ -64,6 +83,6 @@ jobs:
                 {
                   "op": "add",
                   "path": "/fields/System.Description",
-                  "value": "${{ env.TEST_OUTPUT }}"
+                  "value": "${{ env.MY_VARIABLE }}"
                 }
               ]
