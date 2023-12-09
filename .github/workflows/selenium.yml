@@ -55,16 +55,15 @@ jobs:
         with:
           name: Log
           path: TestOutput.log
-
-      - name: Extract failed test information
+          
+      - name: Extract failed tests information
         if: steps.tests.outcome != 'success'
         id: extract-info
-        run: |
-          FAILED_TESTS_INFO=$(grep -A9999 "Failed" TestOutput.log | grep -B9999 "Stack Trace")
-
-          FAILED_TESTS_INFO=$(echo "$FAILED_TESTS_INFO" | sed -e '1,/--/d' -e '/Stack Trace/,$d')
-
-          echo "::set-output name=failed_tests_info::$FAILED_TESTS_INFO"
+        run: |      
+          $failedTests = Get-Content test_output.txt | Select-String -Pattern "Failed:|Error:" -Context 1, 1
+          $failedTests = $failedTests | ForEach-Object { $_.Context.PreContext + $_.Line + $_.Context.PostContext }
+        
+          echo "FailedTestsInfo=$failedTests" >> $GITHUB_ENV
 
       - name: Send bug to Azure DevOps
         if: steps.tests.outcome != 'success'
