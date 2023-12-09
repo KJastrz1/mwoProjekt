@@ -31,7 +31,7 @@ namespace SeleniumTests
         [Test]
         public void MoviesPageTitleIsCorrect()
         {
-            Assert.AreEqual("Movies", _driver.Title);
+            Assert.AreEqual("Movie", _driver.Title);
         }
 
         [Test]
