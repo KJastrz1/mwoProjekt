@@ -2,80 +2,91 @@ name: Selenium
 
 on:
   push:
-    branches: [ "master" ]
+    branches: ["master"]
   pull_request:
-    branches: [ "master" ]
+    branches: ["master"]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3    
-    - name: Install .NET Core
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 7.0.x
-    - name: App Settings Variable Substitution
-      uses: microsoft/variable-substitution@v1
-      with:
-        files: 'P05Shop.API/appsettings.json'
-      env:
-        ConnectionStrings.DefaultConnection: ${{ secrets.DB_CONNECTION_STRING }}
-    - name: Restore Dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --configuration Release
-    - name: Run API
-      run: nohup dotnet run --project P05Shop.API/P05Shop.API.csproj > API.log &
-    - name: Run Web App
-      run: nohup dotnet run --urls http://0.0.0.0:7255 --project P10ShopWebAPPMVC.Client/P10ShopWebAPPMVC.Client.csproj > App.log &
-    - name: Wait 
-      run: sleep 10s
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install .NET Core
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
+      - name: App Settings Variable Substitution
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: "P05Shop.API/appsettings.json"
+        env:
+          ConnectionStrings.DefaultConnection: ${{ secrets.DB_CONNECTION_STRING }}
+      - name: Restore Dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --configuration Release
+      - name: Run API
+        run: nohup dotnet run --project P05Shop.API/P05Shop.API.csproj > API.log &
+      - name: Run Web App
+        run: nohup dotnet run --urls http://0.0.0.0:7255 --project P10ShopWebAPPMVC.Client/P10ShopWebAPPMVC.Client.csproj > App.log &
+      - name: Wait
+        run: sleep 10s
 
-    - uses: browser-actions/setup-chrome@latest
-    - run: chrome --version    
-          
-    - name: Run tests
-      id: tests
-      run: dotnet test > TestOutput.log
-      continue-on-error: true  
+      - uses: browser-actions/setup-chrome@latest
+      - run: chrome --version
 
-    - name: Show test output
-      uses: pCYSl5EDgo/cat@master
-      id: hello
-      with:
-        path: TestOutput.log
-    - run: echo $TEXT
-      env:
-        TEXT: ${{ steps.hello.outputs.text }}        
-     
-    - uses: actions/upload-artifact@v3
-      if: steps.tests.outcome != 'success'
-      with:
-        name: Log
-        path: TestOutput.log
+      - name: Run tests
+        id: tests
+        run: dotnet test > TestOutput.log
+        continue-on-error: true
 
-    - name: Extract failed test information
-      if: steps.tests.outcome != 'success'
-      id: extract-info
-      run: |          
-        FAILED_TESTS_INFO=$(grep -A9999 "Failed" TestOutput.log | grep -B9999 "Stack Trace")
+      - name: Show test output
+        uses: pCYSl5EDgo/cat@master
+        id: hello
+        with:
+          path: TestOutput.log
+      - run: echo $TEXT
+        env:
+          TEXT: ${{ steps.hello.outputs.text }}
 
-        FAILED_TESTS_INFO=$(echo "$FAILED_TESTS_INFO" | sed -e '1,/--/d' -e '/Stack Trace/,$d')
-      
-        echo "::set-output name=failed_tests_info::$FAILED_TESTS_INFO"
+      - uses: actions/upload-artifact@v3
+        if: steps.tests.outcome != 'success'
+        with:
+          name: Log
+          path: TestOutput.log
 
-    - name: Send bug to Azure DevOps
-      if: steps.tests.outcome != 'success'
-      uses: fjogeleit/http-request-action@v1
-      with:
-        url: 'https://dev.azure.com/01158651/mwoProjekt/_apis/wit/workitems/$task?api-version=7.1-preview.3'
-        method: 'POST'
-        username: ${{ secrets.AZURE_USERNAME }}
-        password: ${{ secrets.AZURE_TOKEN }}
-        customHeaders: '{"Content-Type": "application/json-patch+json"}'
-        data: |
-          {
-            "details": "${{ steps.extract-info.outputs.failed_tests_info }}"
-          }
+      - name: Extract failed test information
+        if: steps.tests.outcome != 'success'
+        id: extract-info
+        run: |
+          FAILED_TESTS_INFO=$(grep -A9999 "Failed" TestOutput.log | grep -B9999 "Stack Trace")
+
+          FAILED_TESTS_INFO=$(echo "$FAILED_TESTS_INFO" | sed -e '1,/--/d' -e '/Stack Trace/,$d')
+
+          echo "::set-output name=failed_tests_info::$FAILED_TESTS_INFO"
+
+      - name: Send bug to Azure DevOps
+        if: steps.tests.outcome != 'success'
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: "https://dev.azure.com/01158651/mwoProjekt/_apis/wit/workitems/$task?api-version=7.1-preview.3"
+          method: "POST"
+          username: ${{ secrets.AZURE_USERNAME }}
+          password: ${{ secrets.AZURE_TOKEN }}
+          customHeaders: '{"Content-Type": "application/json-patch+json"}'
+          data: |
+            '[
+              {
+               "op": "add",
+                "path": "/fields/System.Title", 
+                "from": null, 
+                "value": "Pipeline error: ${{ github.event.pull_request.title }}"
+              },
+              {
+                "op": "add",
+                 "path": "/fields/System.Description",
+                 "from": null,
+                 "value": "${{ steps.extract-info.outputs.failed_tests_info }}" 
+                 }
+             ]'
