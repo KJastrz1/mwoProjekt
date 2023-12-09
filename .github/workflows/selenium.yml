@@ -76,17 +76,15 @@ jobs:
           password: ${{ secrets.AZURE_TOKEN }}
           customHeaders: '{"Content-Type": "application/json-patch+json"}'
           data: |
-            '[
-              {
-               "op": "add",
-                "path": "/fields/System.Title", 
-                "from": null, 
-                "value": "Pipeline error: ${{ github.event.pull_request.title }}"
-              },
-              {
-                "op": "add",
-                 "path": "/fields/System.Description",
-                 "from": null,
-                 "value": "${{ steps.extract-info.outputs.failed_tests_info }}" 
-                 }
-             ]'
+              [
+                {
+                  "op": "add",
+                  "path": "/fields/System.Title",
+                  "value": "Pipeline error: Your Error Title"
+                },
+                {
+                  "op": "add",
+                  "path": "/fields/System.Description",
+                  "value": "${{ steps.extract-info.outputs.failed_tests_info }}"
+                }
+              ]
