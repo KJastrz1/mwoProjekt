@@ -61,8 +61,8 @@ jobs:
       - name: Run grep command and capture output
         id: grep
         run: |
-          result=$(grep -A 5 'Failed' TestOutput.log)
-          echo "RESULT=$result"
+          grep -A 5 'Failed' TestOutput.log >> FailedTestsDesc.log
+          grep -B 1 'Failed' TestOutput.log >> FailedTests.log
 
       - name: Run tests and capture output
         run: |
@@ -82,7 +82,7 @@ jobs:
               {
                 "op": "add",
                 "path": "/fields/System.Title",
-                "value": "failed_tests"
+                "value": "$(cat FailedTests.log)"
               },
               {
                 "op": "add",
