@@ -64,8 +64,14 @@ jobs:
          failed_tests=$(grep -A 6 'Error Message:' TestOutput.log || true)
          echo "::set-output name=failed-tests::$failed_tests"
          failed_tests=$(grep -B 2 'Error Message:' TestOutput.log || true)
-         echo "::set-output name=failed-tests-desc::$failed_tests"            
+         echo "::set-output name=failed-tests-desc::$failed_tests"           
 
+            
+      - run: |       
+         echo ${{ steps.extract-info.outputs.failed-tests }}
+    
+         echo ${{ steps.extract-info.outputs.failed-tests-desc }}
+         
       - name: Send bug to Azure DevOps
         if: steps.tests.outcome != 'success'
         uses: fjogeleit/http-request-action@v1
