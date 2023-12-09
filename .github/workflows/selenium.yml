@@ -61,7 +61,7 @@ jobs:
       - name: Run grep command and capture output
         id: grep
         run: |        
-          echo "RESULT=(grep -A 5 'Failed' TestOutput.log)" >> $GITHUB_OUTPUT
+          echo "RESULT=$(grep -A 5 'Failed' TestOutput.log)" >> $GITHUB_OUTPUT
 
       - name: Run tests and capture output
         run: |
