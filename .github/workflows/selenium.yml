@@ -33,7 +33,7 @@ jobs:
       - name: Wait
         run: sleep 10s
       - name: Set permissions
-        run: chmod -R 777 .       
+        run: chmod -R 777 .
 
       - uses: browser-actions/setup-chrome@latest
       - run: chrome --version
@@ -62,13 +62,11 @@ jobs:
         id: grep
         run: |
           result=$(grep -A 5 'Failed' TestOutput.log)
-          echo "RESULT=$result" >> $GITHUB_OUTPUT
+          echo "RESULT=$result"
 
       - name: Run tests and capture output
         run: |
-          echo "Result: ${{steps.grep.outputs.RESULT}}"   
-    
-         
+          echo "Result: ${{ steps.grep.outputs.RESULT }}"
 
       - name: Send bug to Azure DevOps
         if: steps.tests.outcome != 'success'
@@ -80,15 +78,15 @@ jobs:
           password: ${{ secrets.AZURE_TOKEN }}
           customHeaders: '{"Content-Type": "application/json-patch+json"}'
           data: |
-              [
-                {
-                  "op": "add",
-                  "path": "/fields/System.Title",
-                  "value": "failed_tests"
-                },
-                {
-                  "op": "add",
-                  "path": "/fields/System.Description",
-                  "value": "$failed_tests_desc"
-                }
-              ]
+            [
+              {
+                "op": "add",
+                "path": "/fields/System.Title",
+                "value": "failed_tests"
+              },
+              {
+                "op": "add",
+                "path": "/fields/System.Description",
+                "value": "$failed_tests_desc"
+              }
+            ]
