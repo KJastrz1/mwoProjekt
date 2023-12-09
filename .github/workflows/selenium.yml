@@ -68,10 +68,10 @@ jobs:
 
             
       - run: |       
-         echo ${{ steps.extract-info.outputs.failed-tests }}
+         echo "${{ steps.extract-info.outputs.failed-tests }}"
     
-         echo ${{ steps.extract-info.outputs.failed-tests-desc }}
-         
+         echo "${{ steps.extract-info.outputs.failed-tests-desc }}"
+
       - name: Send bug to Azure DevOps
         if: steps.tests.outcome != 'success'
         uses: fjogeleit/http-request-action@v1
