@@ -61,9 +61,9 @@ jobs:
       - name: Extract failed test information
         id: extract-info
         run: |
-         failed_tests=$(grep -A 5 'Error Message:' TestOutput.log || true)
+         failed_tests=$(grep -A 6 'Error Message:' TestOutput.log || true)
          echo "::set-output name=failed-tests::$failed_tests"
-         failed_tests=$(grep -B 1 'Error Message:' TestOutput.log || true)
+         failed_tests=$(grep -B 2 'Error Message:' TestOutput.log || true)
          echo "::set-output name=failed-tests-desc::$failed_tests"            
 
       - name: Send bug to Azure DevOps
