@@ -60,12 +60,13 @@ jobs:
 
       - name: Run grep command and capture output
         id: grep
-        run: |        
-          echo "RESULT=$(grep -A 5 'Failed' TestOutput.log)" >> $GITHUB_OUTPUT
+        run: |
+          result=$(grep -A 5 'Failed' TestOutput.log)
+          echo "RESULT=$result" >> $GITHUB_OUTPUT
 
       - name: Run tests and capture output
         run: |
-          echo "Result: ${{steps.grep.outputs.RESULT}}"  
+          echo "Result: ${{steps.grep.outputs.RESULT}}"   
     
          
 
