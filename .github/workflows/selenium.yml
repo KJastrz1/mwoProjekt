@@ -55,13 +55,24 @@ jobs:
       with:
         name: Log
         path: TestOutput.log
+
+    - name: Extract failed test information
+      id: extract-info
+      run: |       
+        FAILED_TESTS_INFO=$(grep "Failed test" TestOutput.log)
+       
+        echo "::set-output name=failed_tests_info::$FAILED_TESTS_INFO"
+
     - name: Send bug to Azure DevOps
       if: steps.tests.outcome != 'success'
       uses: fjogeleit/http-request-action@v1
       with:
-        url:  'https://dev.azure.com/01158651/mwoProjekt/_apis/wit/workitems/$task?api-version=7.1-preview.3'
+        url: 'https://dev.azure.com/01158651/mwoProjekt/_apis/wit/workitems/$task?api-version=7.1-preview.3'
         method: 'POST'
         username: ${{ secrets.AZURE_USERNAME }}
         password: ${{ secrets.AZURE_TOKEN }}
         customHeaders: '{"Content-Type": "application/json-patch+json"}'
-        data: '[ {"op": "add", "path": "/fields/System.Title", "from": null, "value": "Pipeline error: ${{ github.event.pull_request.title }}" }, { "op": "add", "path": "/fields/System.Description", "from": null, "value": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" }]'
+        data: |
+          {
+            "details": "${{ steps.extract-info.outputs.failed_tests_info }}"
+          }
