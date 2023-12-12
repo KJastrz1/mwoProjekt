@@ -8,7 +8,15 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
+    services:
+      mssql:
+        image: mcr.microsoft.com/mssql/server:2019-latest
+        env:
+          SA_PASSWORD: MyTestPassword
+          ACCEPT_EULA: 'Y'
+        ports:
+          - 1433:1433
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -30,11 +38,9 @@ jobs:
         run: nohup dotnet run --project P05Shop.API/P05Shop.API.csproj > API.log &
       - name: Run Web App
         run: nohup dotnet run --urls http://0.0.0.0:7255 --project P10ShopWebAPPMVC.Client/P10ShopWebAPPMVC.Client.csproj > App.log &
-        
-      - name: Setup sql
-        uses: potatoqualitee/mssqlsuite@v1.7
-        with:
-          install: sqlengine, sqlpackage, localdb
+      - name: Wait
+        run: sleep 10s        
+
           
       - name: Install Compatible EF Core Tools
         run: dotnet tool install --global dotnet-ef --version 7.*
@@ -42,8 +48,7 @@ jobs:
       - uses: browser-actions/setup-chrome@latest
       - run: chrome --version 
       
-      - name: Wait
-        run: sleep 10s
+
 
         
       - name: Add migration
