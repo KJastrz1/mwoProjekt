@@ -37,7 +37,7 @@ jobs:
           install: sqlengine, sqlpackage  
           
       - name: Install Compatible EF Core Tools
-        run: dotnet tool install --global dotnet-ef --version 7.0.0 
+        run: dotnet tool install --global dotnet-ef --version 7.*
         
       - uses: browser-actions/setup-chrome@latest
       - run: chrome --version 
