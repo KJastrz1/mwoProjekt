@@ -50,7 +50,7 @@ jobs:
       - name: Add migration
         run: |
           cd P05Shop.API
-          dotnet ef migrations add migration
+          dotnet ef migrations add initial
           dotnet ef database update
           cd ..
 
