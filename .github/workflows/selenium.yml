@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -44,8 +44,7 @@ jobs:
       
       - name: Wait
         run: sleep 10s
-      - name: Set permissions
-        run: chmod -R 777 .  
+
         
       - name: Add migration
         run: |
@@ -75,11 +74,11 @@ jobs:
           name: Log
           path: TestOutput.log
 
-      - name: Run grep command and capture output
-        id: grep
-        run: |
-          failed_tests_desc=$(grep -A 5 'Failed' TestOutput.log || true)
-          echo "$failed_tests_desc"
+      # - name: Run grep command and capture output
+      #   id: grep
+      #   run: |
+      #     failed_tests_desc=$(grep -A 5 'Failed' TestOutput.log || true)
+      #     echo "$failed_tests_desc"
 
 
       - name: Send bug to Azure DevOps
