@@ -62,10 +62,8 @@ jobs:
         id: grep
         run: |
           failed_tests_desc=$(grep -A 5 'Failed' TestOutput.log || true)
-          echo "FailedTestsDesc=${failed_tests_desc}" >> $GITHUB_ENV
-          shell: /usr/bin/bash -e {0}
-        env:
-          DOTNET_ROOT: /usr/share/dotnet
+          echo "$failed_tests_desc"
+
 
       - name: Send bug to Azure DevOps
         if: steps.tests.outcome != 'success'
