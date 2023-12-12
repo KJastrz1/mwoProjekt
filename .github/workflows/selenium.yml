@@ -39,7 +39,9 @@ jobs:
       - name: Run Web App
         run: nohup dotnet run --urls http://0.0.0.0:7255 --project P10ShopWebAPPMVC.Client/P10ShopWebAPPMVC.Client.csproj > App.log &
       - name: Wait
-        run: sleep 10s        
+        run: sleep 10s
+        
+      - run: sqlcmd -U SA -P 'MyTestPassword' -Q 'CREATE DATABASE testdb'
 
           
       - name: Install Compatible EF Core Tools
