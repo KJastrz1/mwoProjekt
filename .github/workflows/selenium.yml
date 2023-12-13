@@ -89,7 +89,7 @@ jobs:
               {
                 "op": "add",
                 "path": "/fields/System.Description",
-                "value": "${{ env.GITHUB_REPOSITORY_OWNER }}"
+                "value": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
               }
             ]
 
