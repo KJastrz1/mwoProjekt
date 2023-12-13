@@ -81,9 +81,11 @@ jobs:
       - name: Run grep command and capture output
         id: grep
         run: |
-          d=$(grep -A 5 Failed TestOutput.log)
-          echo "DESC=$d" >> "$GITHUB_OUTPUT"
-          
+          {
+            echo 'DESC<<EOF'
+            grep -A 5 Failed TestOutput.log
+            echo EOF
+          } >> "$GITHUB_OUTPUT"
 
 
       - name: Send bug to Azure DevOps
