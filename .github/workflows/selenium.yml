@@ -86,7 +86,9 @@ jobs:
             grep -A 5 Failed TestOutput.log
             echo EOF
           } >> "$GITHUB_OUTPUT"
-
+      - run: echo "$D"
+        env:
+           D: ${{ steps.grep.outputs.DESC }}
 
       - name: Send bug to Azure DevOps
         if: steps.tests.outcome != 'success'
