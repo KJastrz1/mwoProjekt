@@ -9,14 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-20.04
-    # services:
-    #   mssql:
-    #     image: mcr.microsoft.com/mssql/server:2019-latest
-    #     env:
-    #       SA_PASSWORD: MyTestPassword
-    #       ACCEPT_EULA: 'Y'
-    #     ports:
-    #       - 1433:1433
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -78,23 +70,8 @@ jobs:
           name: Log
           path: TestOutput.log
 
-      - name: Run grep command and capture output
-        id: grep
-        run: |
-          {
-            echo 'DESC<<EOF'
-            grep -A 5 Failed TestOutput.log | sed ':a;N;$!ba;s/[\'"]//g'
-
-            echo EOF
-          } >> "$GITHUB_OUTPUT"
-      - run: echo "$D"
-        env:
-           D: ${{ steps.grep.outputs.DESC }}
-
       - name: Send bug to Azure DevOps
         if: steps.tests.outcome != 'success'
-        env:
-          DESC: ${{ steps.grep.outputs.DESC }}
         uses: fjogeleit/http-request-action@v1
         with:
           url: "https://dev.azure.com/01158651/mwoProjekt/_apis/wit/workitems/$task?api-version=7.1-preview.3"
@@ -112,7 +89,7 @@ jobs:
               {
                 "op": "add",
                 "path": "/fields/System.Description",
-                "value": "${{ env.DESC }}"
+                "value": "${{ env.GITHUB_REPOSITORY_OWNER }}"
               }
             ]
 
