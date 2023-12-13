@@ -100,8 +100,19 @@ jobs:
           method: "POST"
           username: ${{ secrets.AZURE_USERNAME }}
           password: ${{ secrets.AZURE_TOKEN }}
-          customHeaders: '{"Content-Type": "application/x-www-form-urlencoded"}'
+          customHeaders: '{"Content-Type": "application/json-patch+json"}'
           data: |
-            System.Title=Tests%20failed&
-            System.Description=${{ env.DESC | url_encode }}
+            [
+              {
+                "op": "add",
+                "path": "/fields/System.Title",
+                "value": "Tests failed"
+              },
+              {
+                "op": "add",
+                "path": "/fields/System.Description",
+                "value": "${{ env.DESC }}"
+              }
+            ]
+
 
