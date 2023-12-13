@@ -44,26 +44,19 @@ jobs:
       - uses: ankane/setup-sqlserver@v1
         with:
           accept-eula: true
-          sqlserver-version: 2019    
-      - run: sqlcmd -U SA -P 'YourStrong!Passw0rd' -Q 'CREATE DATABASE testdb'
-
+          sqlserver-version: 2019 
           
       - name: Install Compatible EF Core Tools
         run: dotnet tool install --global dotnet-ef 
         
       - uses: browser-actions/setup-chrome@latest
-      - run: chrome --version 
-      
-
-
-        
+      - run: chrome --version   
       - name: Add migration
         run: |
           cd P05Shop.API
           dotnet ef migrations add initial
           dotnet ef database update
           cd ..
-
 
       - name: Run tests
         id: tests
@@ -85,15 +78,17 @@ jobs:
           name: Log
           path: TestOutput.log
 
-      # - name: Run grep command and capture output
-      #   id: grep
-      #   run: |
-      #     failed_tests_desc=$(grep -A 5 'Failed' TestOutput.log || true)
-      #     echo "$failed_tests_desc"
+      - name: Run grep command and capture output
+        id: grep
+        run: |
+          echo "DESC=(grep -A 5 'Failed' TestOutput.log || true)" >> "$GITHUB_OUTPUT"
+          
 
 
       - name: Send bug to Azure DevOps
         if: steps.tests.outcome != 'success'
+        env:
+           DESC: ${{ steps.grep.outputs.DESC }}
         uses: fjogeleit/http-request-action@v1
         with:
           url: "https://dev.azure.com/01158651/mwoProjekt/_apis/wit/workitems/$task?api-version=7.1-preview.3"
@@ -106,11 +101,12 @@ jobs:
               {
                 "op": "add",
                 "path": "/fields/System.Title",
-                "value": "${{ env.FailedTestsDesc }}"
+                "value": "Tests failed"
               },
               {
                 "op": "add",
                 "path": "/fields/System.Description",
-                "value": "${failed_tests_desc}"
+                "value": "$DESC"
               }
             ]
+
