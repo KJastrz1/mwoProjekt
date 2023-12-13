@@ -83,7 +83,8 @@ jobs:
         run: |
           {
             echo 'DESC<<EOF'
-            grep -A 5 Failed TestOutput.log | sed ':a;N;$!ba;s/\n/\\n/g'
+            grep -A 5 Failed TestOutput.log | sed ':a;N;$!ba;s/[\'"]//g'
+
             echo EOF
           } >> "$GITHUB_OUTPUT"
       - run: echo "$D"
