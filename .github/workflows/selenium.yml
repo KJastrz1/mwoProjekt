@@ -81,7 +81,7 @@ jobs:
       - name: Run grep command and capture output
         id: grep
         run: |
-          d=$(grep -A 5 'Failed' TestOutput.log)
+          d=$(grep -A 5 Failed TestOutput.log)
           echo "DESC=$d" >> "$GITHUB_OUTPUT"
           
 
