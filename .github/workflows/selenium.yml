@@ -93,25 +93,15 @@ jobs:
       - name: Send bug to Azure DevOps
         if: steps.tests.outcome != 'success'
         env:
-           DESC: ${{ steps.grep.outputs.DESC }}
+          DESC: ${{ steps.grep.outputs.DESC }}
         uses: fjogeleit/http-request-action@v1
         with:
           url: "https://dev.azure.com/01158651/mwoProjekt/_apis/wit/workitems/$task?api-version=7.1-preview.3"
           method: "POST"
           username: ${{ secrets.AZURE_USERNAME }}
           password: ${{ secrets.AZURE_TOKEN }}
-          customHeaders: '{"Content-Type": "application/json-patch+json"}'
+          customHeaders: '{"Content-Type": "application/x-www-form-urlencoded"}'
           data: |
-            [
-              {
-                "op": "add",
-                "path": "/fields/System.Title",
-                "value": "Tests failed"
-              },
-              {
-                "op": "add",
-                "path": "/fields/System.Description",
-                "value": "${{ env.DESC }}"
-              }
-            ]
+            System.Title=Tests%20failed&
+            System.Description=${{ env.DESC | url_encode }}
 
