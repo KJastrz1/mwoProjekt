@@ -111,7 +111,7 @@ jobs:
               {
                 "op": "add",
                 "path": "/fields/System.Description",
-                "value": "a\na"
+                "value": "${{ DESC }}"
               }
             ]
 
