@@ -81,7 +81,7 @@ jobs:
       - name: Run grep command and capture output
         id: grep
         run: |
-          echo "DESC=(grep -A 5 'Failed' TestOutput.log || true)" >> "$GITHUB_OUTPUT"
+          echo "DESC=grep -A 5 'Failed' TestOutput.log || true" >> "$GITHUB_OUTPUT"
           
 
 
@@ -106,7 +106,7 @@ jobs:
               {
                 "op": "add",
                 "path": "/fields/System.Description",
-                "value": "$DESC"
+                "value": "${{ env.DESC }}"
               }
             ]
 
